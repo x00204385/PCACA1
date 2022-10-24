@@ -35,6 +35,3 @@ Host private-instance
    User ubuntu
    ProxyCommand ssh -q -W %h:%p bastion-instance
 ```
-
-## Author:
-Harry Daniels
