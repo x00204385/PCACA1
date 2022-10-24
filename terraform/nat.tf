@@ -5,7 +5,7 @@ resource "aws_eip" "nat" {
 
 resource "aws_nat_gateway" "nat-gw" {
   allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.public-subnet.id
+  subnet_id     = aws_subnet.public-subnet-1a.id
   depends_on    = [aws_internet_gateway.internet-gw]
 }
 
@@ -18,6 +18,6 @@ resource "aws_route_table" "private-rt" {
 }
 
 resource "aws_route_table_association" "private-rta" {
-  subnet_id      = aws_subnet.private-subnet.id
+  subnet_id      = aws_subnet.private-subnet-1a.id
   route_table_id = aws_route_table.private-rt.id
 }
