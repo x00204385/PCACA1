@@ -1,69 +1,45 @@
+locals {
+  public_subnets = [aws_subnet.public-subnet-1a.id, aws_subnet.public-subnet-1b.id]
+  private_subnets = [aws_subnet.private-subnet-1a.id, aws_subnet.private-subnet-1b.id]
+  servers = ["s1", "s2"]
+}
 
-resource "aws_instance" "bastion-instance-1a" {
-  ami           = var.instance-ami
-  instance_type = "t2.micro"
-
-  subnet_id = aws_subnet.public-subnet-1a.id
-
+resource "aws_instance" "webinstance" {
+  count                  = length(local.public_subnets)
+  ami                    = var.instance-ami
+  instance_type          = "t2.micro"
+  subnet_id              = element(local.public_subnets, count.index)
+  key_name               = "tud-aws"
   vpc_security_group_ids = [aws_security_group.allow-ssh.id, aws_security_group.allow-http.id]
 
-  key_name = "tud-aws"
-
   tags = {
-    Name = "bastion-instance-1a"
+    Name = "bastion-instance-1"
   }
 
-  user_data     = <<-EOF
+  user_data = <<-EOF
                   #!/bin/bash
                   sudo su
                   yum -y install httpd
+                  yum -y install lynx
                   echo "<p> My Instance 1</p>" >> /var/www/html/index.html
                   sudo systemctl enable httpd
                   sudo systemctl start httpd
                   EOF
-}
-output "my-public-ip-1a"{
-       value= aws_instance.bastion-instance-1a.public_ip
-}
 
-resource "aws_instance" "bastion-instance-1b" {
-  ami           = var.instance-ami
-  instance_type = "t2.micro"
-
-  subnet_id = aws_subnet.public-subnet-1b.id
-
-  vpc_security_group_ids = [aws_security_group.allow-ssh.id, aws_security_group.allow-http.id]
-
-  key_name = "tud-aws"
-
-  tags = {
-    Name = "bastion-instance-1b"
-  }
-
-  user_data     = <<-EOF
-                  #!/bin/bash
-                  sudo su
-                  yum -y install httpd
-                  echo "<p> My Instance 1</p>" >> /var/www/html/index.html
-                  sudo systemctl enable httpd
-                  sudo systemctl start httpd
-                  EOF
-}
-output "my-public-ip-1b"{
-       value= aws_instance.bastion-instance-1b.public_ip
 }
 
 
 resource "aws_instance" "private-instance" {
+  count                  = length(local.private_subnets)
   ami           = var.instance-ami
   instance_type = "t2.micro"
 
-  subnet_id = aws_subnet.private-subnet-1a.id
+  subnet_id              = element(local.private_subnets, count.index)
 
   vpc_security_group_ids = [aws_security_group.allow-ssh.id]
 
   key_name = "tud-aws"
-  
+
   tags = {
     Name = "private-instance"
   }
