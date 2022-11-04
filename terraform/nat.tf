@@ -17,7 +17,12 @@ resource "aws_route_table" "private-rt" {
   }
 }
 
-resource "aws_route_table_association" "private-rta" {
+resource "aws_route_table_association" "private-rta-1a" {
   subnet_id      = aws_subnet.private-subnet-1a.id
+  route_table_id = aws_route_table.private-rt.id
+}
+
+resource "aws_route_table_association" "private-rta-1b" {
+  subnet_id      = aws_subnet.private-subnet-1b.id
   route_table_id = aws_route_table.private-rt.id
 }
