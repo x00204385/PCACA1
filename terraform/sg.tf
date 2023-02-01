@@ -43,3 +43,26 @@ resource "aws_security_group" "allow-http" {
     Name = "allow-http"
   }
 }
+
+
+resource "aws_security_group" "allow-msql" {
+  vpc_id      = aws_vpc.main.id
+  name        = "allow-mysql"
+  description = "security group that allows msql and all egress traffic"
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "allow-mysql"
+  }
+}

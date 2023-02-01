@@ -15,6 +15,8 @@ The repo requires you to have an AWS profile called: personal. It is possible to
 
 The next step is to generate the SSH keys. In the terraform directory create another directory called keys and create your keys with the following command:
 
+Trivial change to check permissions
+
 ```
 # create the keys
 ssh-keygen -f mykeypair
