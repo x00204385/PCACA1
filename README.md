@@ -1,14 +1,18 @@
 
-# Connecting to a AWS Instance in a private subnet using a Bastion host
+# Connecting to an AWS Instance in a private subnet using a Bastion host
 
 ## Introduction
 
-This repo contains the required infrastructure to connect to an AWS Instance in a private subnet over a bastion host.
+Proof of concept to create a VPC with some basic infrastructure:
 
-## Quick Start
+- 2 public subnets
+- 2 private subnets
+- EC2 instances in each subnet (AWS Linux AMI)
+- Security groups restricting access to instances (allow http, allow ssh)
+- A MySQL RDS instance
 
-To get started clone the repo:
 
+<<<<<<< HEAD
 ```git clone https://github.com/HDaniels1991/AWS-Bastion-Host.git```
 
 The repo requires you to have an AWS profile called: personal. It is possible to change the profile name in the variables.tf file.
@@ -37,3 +41,5 @@ Host private-instance
    User ubuntu
    ProxyCommand ssh -q -W %h:%p bastion-instance
 ```
+=======
+>>>>>>> 979e853efe8295ad6e2ee0584855bde513f8690b
